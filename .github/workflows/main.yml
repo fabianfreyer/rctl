@@ -23,3 +23,15 @@ jobs:
             env PATH="$HOME/.cargo/bin:$PATH" cargo build
             env PATH="$HOME/.cargo/bin:$PATH" cargo test
           usesh: yes
+    
+      - name: coverage
+        uses: vmactions/freebsd-vm@v0.0.5
+        with:
+          prepare: |
+            pkg install -y curl kcov bash
+            curl https://sh.rustup.rs -sSf | sh -s -- -y
+            env PATH="$HOME/.cargo/bin:$PATH" cargo build
+            env PATH="$HOME/.cargo/bin:$PATH" cargo install cargo-kcov
+          run: |
+            env PATH="$HOME/.cargo/bin:$PATH" cargo kcov
+          usesh: yes
